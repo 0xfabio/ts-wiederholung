@@ -1,9 +1,26 @@
+data "template_file" "ansible_inventory" {
+  template = "${file("${path.module}/templates/inventory.tftpl")}"
+
+  vars = {
+    ip_addrs = aws_instance.main.*.public_ip
+  }
+}
+
+resource "tls_private_key" "key" {
+  algorithm = "RSA"
+}
+
+resource "aws_key_pair" "aws_key" {
+  key_name = "ansible-ssh-key"
+  public_key = tls_private_key.key.public_key_openssh
+}
+
 
 resource "aws_instance" "main" {
   count                  = length(var.subnet_id)
   ami                    = var.ec2_instance_ami
   instance_type          = var.ec2_instance_type
-  key_name               = var.key_name  
+  key_name               = aws_key_pair.aws_key.key_name
   vpc_security_group_ids = [aws_security_group.sg.id]
   subnet_id              = var.subnet_id[count.index]
   tags = {

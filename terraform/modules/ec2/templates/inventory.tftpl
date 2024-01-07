@@ -1,0 +1,4 @@
+[app_servers]
+%{ for addr in ip_addrs ~}
+${addr}
+%{ endfor ~}
