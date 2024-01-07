@@ -10,5 +10,5 @@ terraform {
 
 provider "aws" {
   profile = "techstarter"
-  region  = var.aws_region
+  region  = "eu-central-1"
 }
