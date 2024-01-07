@@ -33,9 +33,13 @@ jobs:
           STATE_BUCKET: ${{ secrets.TF_BUCKET }}
       - run: terraform -chdir=terraform/ plan
       - run: terraform -chdir=terraform/ apply -auto-approve
-      - run: terraform -chdir=terraform/ output -raw inventory > ansible/inventory.ini
+      - run: |
+          output=$(terraform -chdir=terraform/ output -raw inventory)
+          echo "$output" > ansible/inventory.ini
         shell: bash
-      - run: terraform -chdir=terraform/ output -raw private_key > ssh_key
+      - run: |
+          output=$(terraform -chdir=terraform/ output -raw private_key)
+          echo "$output" > ssh_key
         shell: bash
       # Setup SSH for ansible
       - name: Setup SSH 
