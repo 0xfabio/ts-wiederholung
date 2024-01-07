@@ -28,7 +28,7 @@ jobs:
       - run: aws configure list-profiles
       - run: aws s3 ls --region eu-central-1 --profile techstarter
       # Create tfvar file
-      - run: echo "state_bucket = "$STATE_BUCKET" > vars.tfvar
+      - run: echo "state_bucket = $STATE_BUCKET" > vars.tfvar
         env: 
           STATE_BUCKET: ${{ secrets.TF_BUCKET }}
       # Create terraform
