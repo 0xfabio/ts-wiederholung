@@ -48,4 +48,5 @@ jobs:
         run: |
           service ssh status
           cd ansible
+          cat inventory.ini
           ansible-playbook -vvv --private-key /home/runner/.ssh/id_rsa -u ubuntu -i inventory.ini playbooks/playbook.yml
