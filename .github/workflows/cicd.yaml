@@ -34,9 +34,16 @@ jobs:
       - run: terraform -chdir=terraform/ plan
       - run: terraform -chdir=terraform/ apply -auto-approve
       - run: |
-          terraform -chdir=terraform/ output -raw inventory | tail -n 2 > ansible/inventory.ini
+          output=$terraform -chdir=terraform/ output -raw inventory > ansible/inventory
+          cat ansible/inventory
+          tail -n +2 ansible/inventory > ansible/inventory.ini
+          cat ansible/inventory.ini
         shell: bash
-      - run: terraform -chdir=terraform/ output -raw private_key | tail -n 2 > ssh_key
+      - run: |
+          terraform -chdir=terraform/ output -raw private_key > ssh
+          cat ssh
+          tail -n +2 ssh > ssh_key
+          cat ssh_key
         shell: bash
       # Setup SSH for ansible
       - name: Setup SSH 
