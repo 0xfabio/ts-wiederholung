@@ -33,7 +33,7 @@ jobs:
           STATE_BUCKET: ${{ secrets.TF_BUCKET }}
       - run: terraform -chdir=terraform/ plan
       - run: terraform -chdir=terraform/ apply -auto-approve
-      - run: terraform -chdir=terraform/ output -raw inventory > ansible/inventory
+      - run: terraform -chdir=terraform/ output -raw inventory > ansible/inventory.ini
       - run: terraform -chdir=terraform/ output -raw private_key > ssh_key
       # Setup SSH for ansible
       - name: Setup SSH 
@@ -48,4 +48,4 @@ jobs:
         run: |
           service ssh status
           cd ansible
-          ansible-playbook -vvv --private-key /home/runner/.ssh/id_rsa -u ubuntu -i inventory playbooks/playbook.yml
+          ansible-playbook -vvv --private-key /home/runner/.ssh/id_rsa -u ubuntu -i inventory.ini playbooks/playbook.yml
