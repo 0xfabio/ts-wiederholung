@@ -11,9 +11,12 @@ output "instance_public_ips" {
 }
 
 output "inventory" {
-  value = data.template_file.ansible_inventory.rendered
+  value = templatefile("${path.module}/templates/inventory.tftpl", {
+    ip_addrs = aws_instance.main.*.public_ip
+  })
 }
 
 output "private_key" {
   value = tls_private_key.key.private_key_pem
+  sensitive = true
 }

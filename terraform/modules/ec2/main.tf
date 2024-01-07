@@ -1,11 +1,3 @@
-data "template_file" "ansible_inventory" {
-  template = "${file("${path.module}/templates/inventory.tftpl")}"
-
-  vars = {
-    ip_addrs = aws_instance.main.*.public_ip
-  }
-}
-
 resource "tls_private_key" "key" {
   algorithm = "RSA"
 }

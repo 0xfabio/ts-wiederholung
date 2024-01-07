@@ -13,4 +13,5 @@ output "inventory" {
 
 output "private_key" {
   value = module.tf_ec2.private_key
+  sensitive = true
 }
