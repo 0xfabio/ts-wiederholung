@@ -1,5 +1,5 @@
 name: Wiederholung Techstarter
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+run-name: AWS create resources
 on: [push]
 jobs:
   Explore-GitHub-Actions:
