@@ -52,10 +52,9 @@ jobs:
           mkdir -p /home/runner/.ssh/
           cp ssh_key /home/runner/.ssh/id_rsa
           chmod 700 /home/runner/.ssh/id_rsa
-          ssh-keyscan -t rsa $(cat /home/runner/.ssh/id_rsa) >> /home/runner/.ssh/known_hosts
       # Run the ansible playbook
-      - run: cat ansible/inventory.ini
       - name: Run ansible
         run: |
           service ssh status
+          export ANSIBLE_HOST_KEY_CHECKING=False
           ansible-playbook -vvv --private-key /home/runner/.ssh/id_rsa -u ubuntu -i ansible/inventory.ini ansible/playbooks/playbook.yml
