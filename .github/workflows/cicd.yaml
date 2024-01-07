@@ -2,7 +2,7 @@ name: Wiederholung Techstarter
 run-name: AWS create resources
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Deploy-App:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -32,4 +32,21 @@ jobs:
         env: 
           STATE_BUCKET: ${{ secrets.TF_BUCKET }}
       - run: terraform -chdir=terraform/ plan
-      # - run: terraform -chdir=terraform/ apply -auto-approve
+      - run: terraform -chdir=terraform/ apply -auto-approve
+      - run: terraform -chdir=terraform/ output -raw inventory > ansible/inventory.ini
+      - run: terraform -chdir=terraform/ output -raw private_key > ssh_key
+      # Setup SSH for ansible
+      - name: Setup SSH 
+        shell: bash
+        run: |
+          eval `ssh-agent -s`
+          mkdir -p /home/runner/.ssh/
+          cp ssh_key /home/runner/.ssh/id_rsa
+          chmod 700 /home/runner/.ssh/id_rsa
+          ssh-keyscan -t rsa -f /home/runner/.ssh/id_rsa >> /home/runner/.ssh/known_hosts
+      # Run the ansible playbook
+      - name: Run ansible
+        run: |
+          service ssh status
+          cd ansible
+          ansible-playbook -vvv --private-key /home/runner/.ssh/id_rsa -u ubunut -i inventory.ini playbooks/playbook.yml
