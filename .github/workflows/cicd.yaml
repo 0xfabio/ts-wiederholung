@@ -27,4 +27,11 @@ jobs:
       - run: cat ~/.aws/credentials
       - run: aws configure list-profiles
       - run: aws s3 ls --region eu-central-1 --profile techstarter
-
+      # Create tfvar file
+      - run: echo "state_bucket = "$STATE_BUCKET" > vars.tfvar
+        env: 
+          STATE_BUCKET: ${{ secrets.TF_BUCKET }}
+      # Create terraform
+      - run: terraform init -chdir terraform/ -var-file="vars.tfvars"
+      - run: terraform plan -chdir terraform/ -var-file="vars.tfvars"
+      - run: terraform apply -chdir terraform/ -var-file="vars.tfvars"
