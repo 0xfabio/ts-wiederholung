@@ -34,7 +34,7 @@ jobs:
       - run: terraform -chdir=terraform/ plan
       - run: terraform -chdir=terraform/ apply -auto-approve
       - run: |
-          output=$terraform -chdir=terraform/ output -raw inventory > ansible/inventory
+          terraform -chdir=terraform/ output -raw inventory > ansible/inventory
           cat ansible/inventory
           tail -n +2 ansible/inventory > ansible/inventory.ini
           cat ansible/inventory.ini
