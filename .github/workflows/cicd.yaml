@@ -32,6 +32,6 @@ jobs:
         env: 
           STATE_BUCKET: ${{ secrets.TF_BUCKET }}
       # Create terraform
-      - run: terraform -chdir terraform/ init -var-file="vars.tfvars"
-      - run: terraform -chdir terraform/ plan -var-file="vars.tfvars"
-      - run: terraform -chdir terraform/ apply -var-file="vars.tfvars"
+      - run: terraform -chdir=terraform/ init -var-file="vars.tfvars"
+      - run: terraform -chdir=terraform/ plan -var-file="vars.tfvars"
+      - run: terraform -chdir=terraform/ apply -var-file="vars.tfvars"
