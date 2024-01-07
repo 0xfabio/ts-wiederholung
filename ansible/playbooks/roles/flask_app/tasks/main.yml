@@ -67,6 +67,8 @@
 
 - name: start flask app
   become_user: ubuntu
-  shell: "flask run --host 0.0.0.0"
+  shell: |
+    nohup flask run --host 0.0.0.0 &
+    echo $! > /home/ubuntu/.flaskpid
   args:
     chdir: /home/ubuntu/myproject
